@@ -468,11 +468,6 @@
                     Click here
                 </p>
             </div>
-            <div class="mt-12 text-center hidden">
-                <p class="clickme-text text-rose-600 text-xl animate-pulse cursor-pointer" id="viewPhotosButton">
-                    Click to view our memories
-                </p>
-            </div>
         </div>
     </div>
 
@@ -761,33 +756,6 @@
             }, 1000); // Slightly longer delay to enjoy the confetti
         }
         
-        // View photos button clicked
-        document.getElementById('viewPhotosButton').addEventListener('click', function() {
-            const letterSection = document.querySelector('.letter-section');
-            const photoGallerySection = document.getElementById('photoGallerySection');
-            
-            // Apply transition effect
-            letterSection.style.opacity = '0';
-            letterSection.style.transform = 'scale(0.9)';
-            
-            setTimeout(() => {
-                // Hide letter section
-                letterSection.classList.add('hidden');
-                
-                // Show photo gallery section
-                photoGallerySection.classList.remove('hidden');
-                photoGallerySection.style.opacity = '0';
-                photoGallerySection.style.transform = 'scale(0.9)';
-                
-                setTimeout(() => {
-                    // Fade in photo gallery
-                    photoGallerySection.style.opacity = '1';
-                    photoGallerySection.style.transform = 'scale(1)';
-                    photoGallerySection.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                }, 100);
-            }, 500);
-        });
-
         // Envelope click interaction
         document.querySelector('.envelope-container').addEventListener('click', function() {
             const letterSection = document.querySelector('.letter-section');

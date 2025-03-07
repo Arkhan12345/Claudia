@@ -57,18 +57,18 @@
             100% { opacity: 0.7; transform: scale(1); }
         }
         
-        /* New scattered collage styles */
+        /* Photo collage improvements */
         .photo-collage {
             position: relative;
-            min-height: 600px;
+            min-height: 1500px;
             padding: 20px;
             margin: 30px auto;
             max-width: 1200px;
+            overflow: hidden;
         }
+
         .photo-item {
             position: absolute;
-            width: 180px;
-            height: 120px;
             background-color: white;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             padding: 5px;
@@ -78,24 +78,47 @@
             transition: all 0.3s ease, z-index 0s;
             z-index: 1;
         }
+
         .photo-item:hover {
             transform: scale(1.1) rotate(var(--rotation));
             z-index: 100;
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
+
         .photo-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: auto;
+            height: auto;
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: contain;
             border-radius: 2px;
         }
+
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) {
+            .photo-collage {
+                min-height: 2400px; /* Much taller for mobile */
+            }
+            
+            .photo-item {
+                width: 120px !important; /* Force smaller photos on mobile */
+                height: 80px !important;
+            }
+            
+            /* Reduce rotation on mobile for better viewing */
+            .photo-item:hover {
+                transform: scale(1.05) rotate(var(--rotation));
+            }
+        }
+
+        /* Improve modal for all screen sizes */
         .photo-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -104,15 +127,19 @@
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
+
         .photo-modal.active {
             opacity: 1;
             pointer-events: auto;
         }
+
         .photo-modal img {
             max-width: 90%;
             max-height: 90%;
             object-fit: contain;
+            box-shadow: 0 0 30px rgba(255,255,255,0.1);
         }
+
         .photo-modal-close {
             position: absolute;
             top: 20px;
@@ -120,37 +147,28 @@
             color: white;
             font-size: 30px;
             cursor: pointer;
+            background: rgba(0,0,0,0.5);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
-        .stiam-message {
-            position: fixed;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.8);
-            color: #ff6b6b;
-            font-size: 3rem;
-            padding: 1rem 2rem;
-            border-radius: 5px;
-            z-index: 9999;
-            opacity: 0%;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
+
+        @media (max-width: 768px) {
+        .letter-container {
+            padding: 15px;
         }
-        @media (prefers-reduced-motion: reduce) {
-            .clickme-text {
-                animation: none;
-            }
-            .rose-decoration:hover {
-                transform: none;
-            }
-            body, html {
-                scroll-behavior: auto;
-            }
-            .transition-all {
-                transition: none !important;
-            }
+        
+        .letter-container .text-xl {
+            font-size: 1rem;
         }
-        /* Add this to your <style> section */
+        
+        .letter-container h2 {
+            font-size: 1.5rem;
+        }
+        }
         @media (max-width: 768px) {
         .rose-decoration {
             width: 80px !important;
@@ -182,40 +200,46 @@
         .rose-decoration.top-1\/3.left-5,
         .rose-decoration.top-1\/3.right-5 {
             display: none; /* Hide some roses on mobile */
+        }    
         }
+
+        .stiam-message {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #ff6b6b;
+            font-size: 3rem;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            z-index: 9999;
+            opacity: 0%;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
         }
-        /* Add this to your <style> section */
-        @media (max-width: 768px) {
-        .photo-collage {
-            min-height: 1500px; /* Increase height for mobile */
+
+        @media (prefers-reduced-motion: reduce) {
+            .clickme-text {
+                animation: none;
+            }
+            .rose-decoration:hover {
+                transform: none;
+            }
+            body, html {
+                scroll-behavior: auto;
+            }
+            .transition-all {
+                transition: none !important;
+            }
         }
-        
-        .photo-item {
-            width: 120px; /* Smaller photos on mobile */
-            height: 80px;
-        }
-        }
-        /* Add this to your <style> section */
-        @media (max-width: 768px) {
-        .letter-container {
-            padding: 15px;
-        }
-        
-        .letter-container .text-xl {
-            font-size: 1rem;
-        }
-        
-        .letter-container h2 {
-            font-size: 1.5rem;
-        }
-        }
+
         #media-player {
             position: fixed;
             bottom: 20px;
             right: 20px;
             width: 55px;
             height: 160px;
-            background: rgba(255, 182, 193, 0.8);
             border-radius: 15px;
             display: flex;
             flex-direction: column;
@@ -224,9 +248,10 @@
             padding: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(5px);
+            z-index: 10;
         }
 
-            button {
+        button {
             background: transparent;
             border: none;
             font-size: 20px;
@@ -235,11 +260,11 @@
             transition: transform 0.2s ease-in-out;
         }
 
-            button:hover {
+        button:hover {
             transform: scale(1.2);
-            }
+        }
 
-            #volume-slider {
+        #volume-slider {
             writing-mode: vertical-lr;
             transform: rotate(180deg);
             width: 8px;
@@ -248,9 +273,9 @@
             background: white;
             border-radius: 5px;
             outline: none;
-            }
+        }
 
-            #volume-slider::-webkit-slider-thumb {
+        #volume-slider::-webkit-slider-thumb {
             appearance: none;
             width: 14px;
             height: 14px;
@@ -258,13 +283,18 @@
             border-radius: 50%;
             cursor: pointer;
             transition: 0.2s;
-            }
+        }
 
-            #volume-slider::-webkit-slider-thumb:hover {
+        #volume-slider::-webkit-slider-thumb:hover {
             background: #ff1493;
-            }
+        }
 
-
+        html {
+            scroll-behavior: smooth;
+        }
+        .page {
+            transition: opacity 0.3s ease;
+        }
     </style>
 </head>
 <body class="bg-gray-50 relative scroll-disabled">
@@ -707,8 +737,8 @@
             
             // Adjust dimensions based on screen size
             const isMobile = window.innerWidth <= 768;
-            const width = isMobile ? 120 : 180;  // Smaller on mobile
-            const height = isMobile ? 80 : 120;  // Smaller on mobile
+            const width = isMobile ? 90 : 150;  // Smaller on mobile
+            const height = isMobile ? 60 : 100;  // Smaller on mobile
             
             // Find a safe position
             const containerWidth = photoCollage.clientWidth || (isMobile ? 300 : 1000);
@@ -854,6 +884,11 @@
                 letterSection.classList.add('hidden');
                 
                 // Show photo gallery section
+                window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                });
                 photoGallerySection.classList.remove('hidden');
                 photoGallerySection.style.opacity = '0';
                 photoGallerySection.style.transform = 'scale(0.9)';
@@ -911,6 +946,24 @@
                 stiamMessage.style.opacity = '0';
             }, 1500);
         }
+
+        function showLoadingSpinner() {
+            document.querySelector('.loading-spinner').style.display = 'block';
+        }
+
+        function hideLoadingSpinner() {
+            document.querySelector('.loading-spinner').style.display = 'none';
+        }
+        
+        // Implement touch events
+        let hammer = new Hammer(document.querySelector('.main-container'));
+            hammer.on('swipeleft', function() {
+            nextPage();
+        });
+            hammer.on('swiperight', function() {
+            prevPage();
+        });
+
     </script>
     <audio id="background-audio" loop autoplay>
         <source src="music/fly-me-to-the-moon-piano.mp3" type="audio/mp3">

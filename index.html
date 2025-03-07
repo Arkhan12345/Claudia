@@ -720,6 +720,13 @@
         document.getElementById('yesButton2').addEventListener('click', handleGirlfriendAnswer);
         document.getElementById('yesyesButton2').addEventListener('click', handleGirlfriendAnswer);
 
+
+        document.getElementById('viewGirlfriendButton').addEventListener('click', function() {
+            // Show girlfriend question
+            document.getElementById('girlfriendQuestion').classList.remove('hidden');
+        });
+
+        // Replace the handleGirlfriendAnswer function with this updated version
         function handleGirlfriendAnswer() {
             // Hide the girlfriend question
             document.getElementById('girlfriendQuestion').classList.add('hidden');
@@ -728,17 +735,31 @@
             // Launch confetti
             launchConfetti();
             
-            // Show the photos button
+            // Directly transition to the photo gallery instead of showing another button
+            const letterSection = document.querySelector('.letter-section');
+            const photoGallerySection = document.getElementById('photoGallerySection');
+            
+            // Apply transition effect
+            letterSection.style.opacity = '0';
+            letterSection.style.transform = 'scale(0.9)';
+            
             setTimeout(() => {
-                document.querySelector('#viewPhotosButton').parentElement.classList.remove('hidden');
-            }, 1000);
+                // Hide letter section
+                letterSection.classList.add('hidden');
+                
+                // Show photo gallery section
+                photoGallerySection.classList.remove('hidden');
+                photoGallerySection.style.opacity = '0';
+                photoGallerySection.style.transform = 'scale(0.9)';
+                
+                setTimeout(() => {
+                    // Fade in photo gallery
+                    photoGallerySection.style.opacity = '1';
+                    photoGallerySection.style.transform = 'scale(1)';
+                    photoGallerySection.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                }, 100);
+            }, 1000); // Slightly longer delay to enjoy the confetti
         }
-    
-        // View girlfriend button clicked
-        document.getElementById('viewGirlfriendButton').addEventListener('click', function() {
-            // Show girlfriend question
-            document.getElementById('girlfriendQuestion').classList.remove('hidden');
-        });
         
         // View photos button clicked
         document.getElementById('viewPhotosButton').addEventListener('click', function() {

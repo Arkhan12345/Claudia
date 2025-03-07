@@ -209,6 +209,62 @@
             font-size: 1.5rem;
         }
         }
+        #media-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 55px;
+            height: 160px;
+            background: rgba(255, 182, 193, 0.8);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+            button {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.2s ease-in-out;
+        }
+
+            button:hover {
+            transform: scale(1.2);
+            }
+
+            #volume-slider {
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+            width: 8px;
+            height: 90px;
+            appearance: none;
+            background: white;
+            border-radius: 5px;
+            outline: none;
+            }
+
+            #volume-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #ff69b4;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.2s;
+            }
+
+            #volume-slider::-webkit-slider-thumb:hover {
+            background: #ff1493;
+            }
+
+
     </style>
 </head>
 <body class="bg-gray-50 relative scroll-disabled">
@@ -492,7 +548,62 @@
         Stiam :)
     </div>
 
+    <div id="media-player">
+        <button id="play-pause-btn">⏸️</button>  
+        <button id="mute-btn">🔊</button>
+        <input id="volume-slider" type="range" min="0" max="100" value="30">
+    </div>  
+
     <script>
+        window.onload = function () {
+            const audio = document.getElementById("background-audio");
+            let volume = 0;
+            audio.volume = 0;
+            audio.play();
+
+            // Gradually increase volume
+            const interval = setInterval(() => {
+                if (volume < 0.15) {
+                    volume += 0.025;
+                    audio.volume = volume;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 1000);
+
+            audio.addEventListener("ended", () => {
+                audio.currentTime = 0;
+                audio.play();
+            });
+        };
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const audio = document.getElementById("background-audio");
+            const muteButton = document.getElementById("mute-btn");
+            const volumeSlider = document.getElementById("volume-slider");
+            const playPauseButton = document.getElementById("play-pause-btn");
+
+            muteButton.addEventListener("click", function () {
+                audio.muted = !audio.muted;
+                muteButton.textContent = audio.muted ? "🔇" : "🔊";
+            });
+
+            volumeSlider.addEventListener("input", function () {
+                audio.volume = volumeSlider.value / 100;
+            });
+
+            // Play/Pause button functionality
+            playPauseButton.addEventListener("click", function () {
+                if (audio.paused) {
+                    audio.play();
+                    playPauseButton.textContent = "⏸️"; // Change to pause icon
+                } else {
+                    audio.pause();
+                    playPauseButton.textContent = "▶️"; // Change to play icon
+                }
+            });
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
         const photoCollage = document.querySelector('.photo-collage');
         
@@ -801,5 +912,9 @@
             }, 1500);
         }
     </script>
+    <audio id="background-audio" loop autoplay>
+        <source src="music/fly-me-to-the-moon-piano.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>  
 </body>
 </html>

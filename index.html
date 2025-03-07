@@ -6,6 +6,7 @@
     <title>A Love Letter for You</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap');
         body, html {
@@ -57,14 +58,15 @@
             100% { opacity: 0.7; transform: scale(1); }
         }
         
-        /* Photo collage improvements */
+        /* Updated Photo Collage Styles */
         .photo-collage {
             position: relative;
-            min-height: 1500px;
+            min-height: 1800px;
             padding: 20px;
             margin: 30px auto;
             max-width: 1200px;
             overflow: hidden;
+            background-color: #f9f9f9;
         }
 
         .photo-item {
@@ -77,48 +79,35 @@
             transform: rotate(var(--rotation));
             transition: all 0.3s ease, z-index 0s;
             z-index: 1;
+            overflow: hidden;
         }
 
         .photo-item:hover {
-            transform: scale(1.1) rotate(var(--rotation));
+            transform: scale(1.05) rotate(var(--rotation));
             z-index: 100;
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
         .photo-item img {
-            width: auto;
-            height: auto;
-            max-width: 200px;
-            max-height: 200px;
-            object-fit: contain;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             border-radius: 2px;
+            transition: all 0.3s ease;
         }
 
-        /* Mobile-specific adjustments */
-        @media (max-width: 768px) {
-            .photo-collage {
-                min-height: 2400px; /* Much taller for mobile */
-            }
-            
-            .photo-item {
-                width: 120px !important; /* Force smaller photos on mobile */
-                height: 80px !important;
-            }
-            
-            /* Reduce rotation on mobile for better viewing */
-            .photo-item:hover {
-                transform: scale(1.05) rotate(var(--rotation));
-            }
+        .photo-item:hover img {
+            filter: brightness(1.1);
         }
 
-        /* Improve modal for all screen sizes */
+        /* Improved Modal Styling */
         .photo-modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.9);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -135,9 +124,10 @@
 
         .photo-modal img {
             max-width: 90%;
-            max-height: 90%;
+            max-height: 85%;
             object-fit: contain;
             box-shadow: 0 0 30px rgba(255,255,255,0.1);
+            border-radius: 8px;
         }
 
         .photo-modal-close {
@@ -145,15 +135,75 @@
             top: 20px;
             right: 20px;
             color: white;
-            font-size: 30px;
+            font-size: 24px;
             cursor: pointer;
-            background: rgba(0,0,0,0.5);
+            background: #e11d48; /* Rose-600 */
             width: 40px;
             height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+            z-index: 1010;
+            transition: all 0.2s ease;
+        }
+
+        .photo-modal-close:hover {
+            transform: scale(1.1);
+            background: #be123c; /* Rose-700 */
+        }
+
+        .photo-navigation {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1100px;
+            padding: 0 20px;
+            position: absolute;
+            bottom: 40px;
+            z-index: 1010;
+        }
+
+        .photo-nav-btn {
+            background: #e11d48; /* Rose-600 */
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .photo-nav-btn:hover {
+            background: #be123c; /* Rose-700 */
+            transform: scale(1.1);
+        }
+
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) {
+            .photo-collage {
+                min-height: 2400px; /* Taller for mobile */
+            }
+            
+            .photo-item {
+                transform: scale(0.85) rotate(var(--rotation));
+            }
+            
+            .photo-navigation {
+                bottom: 20px;
+            }
+            
+            .photo-nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -204,6 +254,22 @@
         }
 
         .stiam-message {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #ff6b6b;
+            font-size: 3rem;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            z-index: 9999;
+            opacity: 0%;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .gresit-message {
             position: fixed;
             top: 20%;
             left: 50%;
@@ -468,11 +534,11 @@
                 Claudia
             </h1>
             <p class="text-xl text-white max-w-2xl mx-auto opacity-90 mb-20">
-                On this celebratory day, accept this letter from my behalf...
+                on this celebratory day, accept this letter from my behalf...
             </p>
-            <p class="clickme-text text-white text-xl animate-pulse">
-                Click the screen
-            </p>
+            <button id="startButton" class="clickme-text text-white text-xl animate-pulse border-none bg-transparent cursor-pointer">
+                Click me
+            </button>
         </div>
     </div>
 
@@ -522,6 +588,7 @@
                 </p>
                 <p>
                     You mentioned in your letter that you care about me, and through this "letter" I want to show you how much I care for you.
+                    This is not as much a letter as it is an invitation to a life of love. <-
                     You upset me much when you told me I am unable to show appreciation. I hope in the future you will change your opinion.
                     I hope now we are at peace with one another and that you are content with our bond - as we had our misunderstandings. But my
                     greatest torment since I have known you has been seeing you anguished.
@@ -536,12 +603,12 @@
                 <p>
                     Love, I believe is a decision, not a feeling. And if it was it would be a feeling easily weakend and distorted. But you are capable of it.
                     You are always ready to give your love. I'm not talking only about your love for me, which is beyond that. But you are lavish with little secondary loves, like
-                    your plushes, and your appreciation of the small things in life-or that night when you loved that drunkard you met at the bar, who turned out to be me.
+                    your plushes, or your appreciation of the small things in life-or that night when you loved that drunkard you met at the bar, who turned out to be me.
                     Alas, falling in love with you was the easiest thing I've done. You are utterly lovable, and you fill my soul with ardent bliss.
                 </p>
                 <p>
                     I loved you when I met you, I love you today, and I will love you forever.
-                    To infinity and beyond, no more ;).<br/>
+                    To infinity and beyond, and no more ;).<br/>
                 </p>
                 <p class="text-right italic text-rose-600">
                     Yours,<br/>
@@ -557,25 +624,32 @@
         </div>
     </div>
 
-    <!-- Photo Gallery Section (initially hidden) -->
-    <div id="photoGallerySection" class="min-h-screen bg-gray-100 p-4 hidden">
-        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-romantic p-6">
-            <h2 class="text-3xl text-center text-rose-600 mb-8 font-bold">Our Memories</h2>
+    <!-- Photo Gallery Section -->
+    <div id="photoGallerySection" class="min-h-screen bg-gradient-to-b from-rose-50 to-pink-100 p-4 hidden">
+        <div class="max-w-6xl mx-auto bg-white rounded-lg shadow-xl p-6">
+            <h2 class="text-3xl text-center text-rose-600 mb-8 font-bold font-serif">Memories</h2>
             
             <div class="photo-collage">
                 <!-- Images will be dynamically placed here by JavaScript -->
             </div>
         </div>
     </div>
-    
-    <!-- Photo Modal -->
+
+    <!-- Photo Modal with Improved Controls -->
     <div id="photoModal" class="photo-modal">
-        <div class="photo-modal-close">&times;</div>
+        <div class="photo-modal-close">
+            <i class="fas fa-heart"></i>
+        </div>
         <img id="modalImage" src="" alt="Enlarged photo">
+        <!-- Navigation buttons will be added by JavaScript -->
     </div>
 
     <div id="stiamMessage" class="stiam-message">
         Stiam :)
+    </div>
+
+    <div id="gresitMessage" class="gresit-message">
+        Gresit. Ai vrut sa spui YesYesYes.
     </div>
 
     <div id="media-player">
@@ -635,163 +709,202 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
-        const photoCollage = document.querySelector('.photo-collage');
-        
-        // Image sources - using absolute URLs or properly validated local paths
-        const imageSources = [
-            { src: "images/claudia1.jpg", alt: "claudia1" },
-            { src: "images/claudia2.jpg", alt: "claudia2" },
-            { src: "images/img (1).jpg", alt: "img1" },
-            { src: "images/img (2).jpg", alt: "img2" },
-            { src: "images/img (3).jpg", alt: "img3" },
-            { src: "images/img (4).jpg", alt: "img4" },
-            { src: "images/img (5).jpg", alt: "img5" },
-            { src: "images/img (6).jpg", alt: "img6" },
-            { src: "images/img (7).jpg", alt: "img7" },
-            { src: "images/img (8).jpg", alt: "img8" },
-            { src: "images/img (9).jpg", alt: "img9" },
-            { src: "images/img (10).jpg", alt: "img10" },
-            { src: "images/img (11).jpg", alt: "img11" },
-            { src: "images/img (12).jpg", alt: "img12" },
-            { src: "images/img (13).jpg", alt: "img13" },
-            { src: "images/img (14).jpg", alt: "img14" },
-            { src: "images/img (15).jpg", alt: "img15" },
-            { src: "images/img (16).jpg", alt: "img16" },
-            { src: "images/img (17).jpg", alt: "img17" },
-            { src: "images/img (18).jpg", alt: "img18" },
-            { src: "images/img (19).jpg", alt: "img19" },
-            { src: "images/img (20).jpg", alt: "img20" },
-            { src: "images/img (21).jpg", alt: "img21" },
-            { src: "images/img (22).jpg", alt: "img22" },
-            { src: "images/img (23).jpg", alt: "img23" },
-            { src: "images/img (24).jpg", alt: "img24" },
-            { src: "images/img (25).jpg", alt: "img25" },
-            { src: "images/img (26).jpg", alt: "img26" },
-            { src: "images/img (27).jpg", alt: "img27" }
-        ];
-        
-        // Set the dimensions for the collage container to better handle positioning
-        photoCollage.style.height = '1200px';  // Increased height to avoid overcrowding
-        
-        // Track occupied spaces to avoid overlap
-        const occupiedSpaces = [];
-        
-        // Function to check if a position would overlap with existing photos
-        function wouldOverlap(left, top, width, height) {
-            // Add buffer zone around photos
-            const buffer = 10;
+            const photoCollage = document.querySelector('.photo-collage');
             
-            for (const space of occupiedSpaces) {
-                if (
-                    left < space.right + buffer &&
-                    left + width + buffer > space.left &&
-                    top < space.bottom + buffer &&
-                    top + height + buffer > space.top
-                ) {
-                    return true;  // Overlap detected
-                }
-            }
-            return false;  // No overlap
-        }
-        
-        // Function to find a non-overlapping position
-        // Replace the findSafePosition function with this improved version
-        function findSafePosition(width, height, containerWidth, containerHeight) {
-            let tries = 0;
-            let left, top;
+            // Image sources - using absolute URLs or properly validated local paths
+            const imageSources = [
+                { src: "images/claudia1.jpg", alt: "claudia1" },
+                { src: "images/claudia2.jpg", alt: "claudia2" },
+                { src: "images/img (1).jpg", alt: "img1" },
+                { src: "images/img (2).jpg", alt: "img2" },
+                { src: "images/img (3).jpg", alt: "img3" },
+                { src: "images/img (4).jpg", alt: "img4" },
+                { src: "images/img (5).jpg", alt: "img5" },
+                { src: "images/img (6).jpg", alt: "img6" },
+                { src: "images/img (7).jpg", alt: "img7" },
+                { src: "images/img (8).jpg", alt: "img8" },
+                { src: "images/img (9).jpg", alt: "img9" },
+                { src: "images/img (10).jpg", alt: "img10" },
+                { src: "images/img (11).jpg", alt: "img11" },
+                { src: "images/img (12).jpg", alt: "img12" },
+                { src: "images/img (13).jpg", alt: "img13" },
+                { src: "images/img (14).jpg", alt: "img14" },
+                { src: "images/img (15).jpg", alt: "img15" },
+                { src: "images/img (16).jpg", alt: "img16" },
+                { src: "images/img (17).jpg", alt: "img17" },
+                { src: "images/img (18).jpg", alt: "img18" },
+                { src: "images/img (19).jpg", alt: "img19" },
+                { src: "images/img (20).jpg", alt: "img20" },
+                { src: "images/img (21).jpg", alt: "img21" },
+                { src: "images/img (22).jpg", alt: "img22" },
+                { src: "images/img (23).jpg", alt: "img23" },
+                { src: "images/img (24).jpg", alt: "img24" },
+                { src: "images/img (25).jpg", alt: "img25" },
+                { src: "images/img (26).jpg", alt: "img26" },
+                { src: "images/img (27).jpg", alt: "img27" }
+            ];
             
-            // Get actual container dimensions
-            const isMobile = window.innerWidth <= 768;
-            const effectiveWidth = isMobile ? containerWidth - width - 20 : containerWidth - width - 40;
+            // Clear existing content
+            photoCollage.innerHTML = '';
             
-            // Try up to 50 times to find a non-overlapping position
-            do {
-                // On mobile, be more careful with horizontal positioning
-                left = Math.floor(Math.random() * effectiveWidth) + (isMobile ? 10 : 20);
-                top = Math.floor(Math.random() * (containerHeight - height - 40)) + 20;
-                tries++;
+            // Set the dimensions for the collage container to match the screenshot layout
+            photoCollage.style.height = '1800px';
+            photoCollage.style.display = 'grid';
+            photoCollage.style.gridTemplateColumns = 'repeat(auto-fill, minmax(150px, 1fr))';
+            photoCollage.style.gap = '10px';
+            photoCollage.style.position = 'relative';
+            
+            // Create the collage layout similar to the screenshot
+            imageSources.forEach((img, index) => {
+                const photoItem = document.createElement('div');
+                photoItem.className = 'photo-item';
+                photoItem.dataset.img = `img-${index}`;
                 
-                if (tries > 50) {
-                    console.log("Couldn't find non-overlapping position after 50 tries");
-                    break;
+                // Use fixed positions to match the screenshot layout
+                photoItem.style.position = 'absolute';
+                
+                // Determine size variations (similar to screenshot)
+                const size = index % 5 === 0 ? 'large' : 
+                            index % 3 === 0 ? 'medium-large' : 
+                            index % 2 === 0 ? 'medium' : 'standard';
+                
+                // Set sizes based on category
+                let width, height;
+                if (size === 'large') {
+                    width = 180;
+                    height = 180;
+                } else if (size === 'medium-large') {
+                    width = 160;
+                    height = 140;
+                } else if (size === 'medium') {
+                    width = 150;
+                    height = 120;
+                } else {
+                    width = 120;
+                    height = 100;
                 }
-            } while (wouldOverlap(left, top, width, height));
-            
-            // Record this position as occupied
-            occupiedSpaces.push({
-                left: left,
-                top: top,
-                right: left + width,
-                bottom: top + height,
+                
+                // Calculate positions based on index to create a pattern similar to the screenshot
+                // This uses a grid-like placement with some variation in sizes
+                const column = index % 6;
+                const row = Math.floor(index / 6);
+                const baseX = column * 180;
+                const baseY = row * 160;
+                
+                // Add slight randomness to positioning like in the screenshot
+                const randomOffsetX = Math.floor(Math.random() * 20) - 10;
+                const randomOffsetY = Math.floor(Math.random() * 20) - 10;
+                
+                photoItem.style.width = `${width}px`;
+                photoItem.style.height = `${height}px`;
+                photoItem.style.left = `${baseX + randomOffsetX}px`;
+                photoItem.style.top = `${baseY + randomOffsetY}px`;
+                
+                // Less extreme rotation as in the screenshot
+                const randomRotation = Math.floor(Math.random() * 10) - 5;
+                photoItem.style.setProperty('--rotation', `${randomRotation}deg`);
+                
+                // Create image element
+                const imgElement = document.createElement('img');
+                imgElement.src = img.src;
+                imgElement.alt = img.alt;
+                imgElement.style.width = '100%';
+                imgElement.style.height = '100%';
+                imgElement.style.objectFit = 'cover'; // Use cover to fill the frames like in screenshot
+                
+                photoItem.appendChild(imgElement);
+                photoCollage.appendChild(photoItem);
+                
+                // Add click event for photo modal
+                photoItem.addEventListener('click', function() {
+                    const modalImage = document.getElementById('modalImage');
+                    modalImage.src = img.src;
+                    document.getElementById('photoModal').classList.add('active');
+                });
             });
             
-            return { left, top };
-        }
-        
-        // Create photo items with non-overlapping positions
-        // Replace or modify the photo creation code block (in the imageSources.forEach loop)
-        imageSources.forEach((img, index) => {
-            const photoItem = document.createElement('div');
-            photoItem.className = 'photo-item';
-            photoItem.dataset.img = `img-${index}`;
-            
-            // Adjust dimensions based on screen size
-            const isMobile = window.innerWidth <= 768;
-            const width = isMobile ? 90 : 150;  // Smaller on mobile
-            const height = isMobile ? 60 : 100;  // Smaller on mobile
-            
-            // Find a safe position
-            const containerWidth = photoCollage.clientWidth || (isMobile ? 300 : 1000);
-            const containerHeight = isMobile ? 1500 : 1200;
-            const position = findSafePosition(width, height, containerWidth, containerHeight);
-            
-            // Apply position
-            photoItem.style.top = `${position.top}px`;
-            photoItem.style.left = `${position.left}px`;
-            
-            // Less extreme rotation on mobile
-            const randomRotation = isMobile ? 
-                (Math.floor(Math.random() * 20) - 10) : 
-                (Math.floor(Math.random() * 30) - 15);
-            photoItem.style.setProperty('--rotation', `${randomRotation}deg`);
-            
-            // Create image element
-            const imgElement = document.createElement('img');
-            imgElement.src = img.src;
-            imgElement.alt = img.alt;
-            
-            photoItem.appendChild(imgElement);
-            photoCollage.appendChild(photoItem);
-            
-            // Add click event for photo modal
-            photoItem.addEventListener('click', function() {
-                const modalImage = document.getElementById('modalImage');
-                modalImage.src = img.src;
-                document.getElementById('photoModal').classList.add('active');
-            });
-        });
-        
-        // Photo modal close functionality
-        const modalClose = document.querySelector('.photo-modal-close');
-        const photoModal = document.getElementById('photoModal');
-        
-        modalClose.addEventListener('click', function() {
-            photoModal.classList.remove('active');
-        });
-        
-        photoModal.addEventListener('click', function(e) {
-            if (e.target === this) {
-                photoModal.classList.remove('active');
+            // Specialized positioning for the center image (like in the screenshot)
+            // This places a larger image in the center
+            if (imageSources.length > 14) {
+                const centerPhotoIndex = 14;
+                const centerPhoto = photoCollage.querySelector(`[data-img="img-${centerPhotoIndex}"]`);
+                if (centerPhoto) {
+                    centerPhoto.style.width = '220px';
+                    centerPhoto.style.height = '220px';
+                    centerPhoto.style.left = '50%';
+                    centerPhoto.style.top = '50%';
+                    centerPhoto.style.transform = 'translate(-50%, -50%)';
+                    centerPhoto.style.zIndex = '10';
+                }
             }
+            
+            // Photo modal close functionality with themed buttons
+            const modalClose = document.querySelector('.photo-modal-close');
+            const photoModal = document.getElementById('photoModal');
+            
+            // Update the close button to match the theme
+            modalClose.innerHTML = '<i class="fas fa-heart"></i>'; // Using a heart icon instead of X
+            modalClose.className = 'photo-modal-close bg-rose-500 hover:bg-rose-600 text-white rounded-full p-2 shadow-lg transition-all';
+            
+            modalClose.addEventListener('click', function() {
+                photoModal.classList.remove('active');
+            });
+            
+            photoModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    photoModal.classList.remove('active');
+                }
+            });
+            
+            // Add themed navigation buttons to the modal
+            const navigationContainer = document.createElement('div');
+            navigationContainer.className = 'photo-navigation flex justify-between w-full max-w-4xl px-4 absolute bottom-8';
+            
+            const prevButton = document.createElement('button');
+            prevButton.className = 'photo-nav-btn bg-rose-500 hover:bg-rose-600 text-white rounded-full p-3 shadow-lg transition-all';
+            prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            
+            const nextButton = document.createElement('button');
+            nextButton.className = 'photo-nav-btn bg-rose-500 hover:bg-rose-600 text-white rounded-full p-3 shadow-lg transition-all';
+            nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            
+            navigationContainer.appendChild(prevButton);
+            navigationContainer.appendChild(nextButton);
+            
+            photoModal.appendChild(navigationContainer);
+            
+            // Track current image index
+            let currentImageIndex = 0;
+            
+            // Navigation functionality
+            prevButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                currentImageIndex = (currentImageIndex - 1 + imageSources.length) % imageSources.length;
+                document.getElementById('modalImage').src = imageSources[currentImageIndex].src;
+            });
+            
+            nextButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                currentImageIndex = (currentImageIndex + 1) % imageSources.length;
+                document.getElementById('modalImage').src = imageSources[currentImageIndex].src;
+            });
         });
-    });
 
         // Click screen to start interaction
-        document.getElementById('introSection').addEventListener('click', function() {
+        document.getElementById('startButton').addEventListener('click', function() {
             // Show love question
             document.getElementById('loveQuestion').classList.remove('hidden');
         });
         
+                    
+        document.getElementById('yesyesButton').addEventListener('click', function() {
+            showStiamMessage();
+        });
+
+        document.getElementById('yesButton').addEventListener('click', function() {
+            showGresitMessage();
+        });
+
         // Answer buttons handlers
         document.getElementById('yesButton').addEventListener('click', handleLoveAnswer);
         document.getElementById('yesyesButton').addEventListener('click', handleLoveAnswer);
@@ -800,8 +913,7 @@
             // Hide question and intro section
             document.getElementById('loveQuestion').classList.add('hidden');
             document.getElementById('introSection').classList.add('hidden');
-            
-            showStiamMessage();
+
             
             // Show envelope section
             const envelopeSection = document.getElementById('envelopeSection');
@@ -944,6 +1056,15 @@
             
             setTimeout(() => {
                 stiamMessage.style.opacity = '0';
+            }, 1500);
+        }
+
+        function showGresitMessage() {
+            const gresitMessage = document.getElementById('gresitMessage');
+            gresitMessage.style.opacity = '1';
+            
+            setTimeout(() => {
+                gresitMessage.style.opacity = '0';
             }, 1500);
         }
 

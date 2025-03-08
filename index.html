@@ -592,10 +592,10 @@
                 </p>
                 <p>
                     You mentioned in your letter that you care about me, and through this "letter" I want to show you how much I care for you.
-                    This is not as much a letter as it is an invitation to a life of love. <-
-                    You upset me much when you told me I am unable to show appreciation. I hope in the future you will change your opinion.
+                    This is not as much a letter as it is an invitation to a life of love.
+                    You upset me much when you told me I am unable to show my appreciation to you. I hope in the future you will change your opinion.
                     I hope now we are at peace with one another and that you are content with our bond - as we had our misunderstandings. But my
-                    greatest torment since I have known you has been seeing you anguished.
+                    greatest torment since I have known you has been seeing you anguished. 
                 </p>
                 <p>
                     I am nearly mad at you-nearly, as much as one can be mad. I cannot bring toghether two ideas that you do not interpose yourself between them.
@@ -657,87 +657,80 @@
     </div>
 
     <div id="media-player">
-        <button id="play-pause-btn">⏸️</button>  
+        <button id="play-pause-btn">▶️</button>  
         <button id="mute-btn">🔊</button>
         <input id="volume-slider" type="range" min="0" max="100" value="30">
     </div>
 
     <script>
-        window.onload = function () {
-            const audio = document.getElementById("background-audio");
-            let volume = 0;
-            audio.volume = 0;
-            audio.play();
-
-            // Gradually increase volume
-            const interval = setInterval(() => {
-                if (volume < 0.15) {
-                    volume += 0.025;
-                    audio.volume = volume;
-                } else {
-                    clearInterval(interval);
-                }
-            }, 1000);
-
-            audio.addEventListener("ended", () => {
-                audio.currentTime = 0;
-                audio.play();
-            });
-        };
-        
         document.addEventListener("DOMContentLoaded", function() {
+            // Get all required elements
             const audio = document.getElementById("background-audio");
             const muteButton = document.getElementById("mute-btn");
             const volumeSlider = document.getElementById("volume-slider");
             const playPauseButton = document.getElementById("play-pause-btn");
+            const startButton = document.getElementById("startButton");
             
-            // Set audio source - replace with your audio file path
-            audio.src = "music/fly-me-to-the-moon-piano.mp3";
+            // Set initial volume to 0
+            audio.volume = 0;
             
-            // Add these attributes to help with autoplay
-            audio.muted = true; // Initially muted to bypass autoplay restrictions
-            
-            // Try to play as soon as possible
-            const playPromise = audio.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    // Autoplay started successfully
-                    // Now we can unmute after a slight delay
-                    setTimeout(() => {
-                        audio.muted = false;
-                        audio.volume = volumeSlider.value / 100;
-                        muteButton.textContent = "🔊";
-                    }, 1000);
+            // Start button functionality
+            startButton.addEventListener("click", function() {
+                // Reset audio if it's already playing
+                if (!audio.paused) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+                
+                // Set volume to 0 and start playing
+                audio.volume = 0;
+                
+                // Play the audio
+                audio.play().then(() => {
+                    // Update UI to show playing state
+                    playPauseButton.textContent = "⏸️";
+                    
+                    // Fade in volume
+                    let volume = 0;
+                    const interval = setInterval(() => {
+                        if (volume < 0.3) {  // Increase to 30%
+                            volume += 0.01;   // Smaller increments for smoother fade
+                            audio.volume = volume;
+                        } else {
+                            clearInterval(interval);
+                        }
+                    }, 100);  // Faster interval for smoother fade
+                    
                 }).catch(error => {
-                    // Autoplay was prevented
-                    console.log("Autoplay prevented:", error);
-                    // Keep the play button showing play state
+                    console.log("Playback failed:", error);
                     playPauseButton.textContent = "▶️";
                 });
-            }
-            
-            // Your existing event listeners
-            muteButton.addEventListener("click", function() {
-                audio.muted = !audio.muted;
-                muteButton.textContent = audio.muted ? "🔇" : "🔊";
             });
             
-            volumeSlider.addEventListener("input", function() {
-                audio.volume = volumeSlider.value / 100;
-            });
-            
+            // Play/Pause button
             playPauseButton.addEventListener("click", function() {
                 if (audio.paused) {
-                    audio.play();
-                    playPauseButton.textContent = "⏸️";
+                    audio.play().then(() => {
+                        playPauseButton.textContent = "⏸️";
+                    });
                 } else {
                     audio.pause();
                     playPauseButton.textContent = "▶️";
                 }
             });
             
-            // Loop the audio when it ends
+            // Mute button
+            muteButton.addEventListener("click", function() {
+                audio.muted = !audio.muted;
+                muteButton.textContent = audio.muted ? "🔇" : "🔊";
+            });
+            
+            // Volume slider
+            volumeSlider.addEventListener("input", function() {
+                audio.volume = volumeSlider.value / 100;
+            });
+            
+            // Loop when ended
             audio.addEventListener("ended", () => {
                 audio.currentTime = 0;
                 audio.play();

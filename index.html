@@ -660,7 +660,7 @@
         <button id="play-pause-btn">⏸️</button>  
         <button id="mute-btn">🔊</button>
         <input id="volume-slider" type="range" min="0" max="100" value="30">
-    </div>  
+    </div>
 
     <script>
         window.onload = function () {
@@ -684,31 +684,63 @@
                 audio.play();
             });
         };
-
-        document.addEventListener("DOMContentLoaded", function () {
+        
+        document.addEventListener("DOMContentLoaded", function() {
             const audio = document.getElementById("background-audio");
             const muteButton = document.getElementById("mute-btn");
             const volumeSlider = document.getElementById("volume-slider");
             const playPauseButton = document.getElementById("play-pause-btn");
-
-            muteButton.addEventListener("click", function () {
+            
+            // Set audio source - replace with your audio file path
+            audio.src = "music/fly-me-to-the-moon-piano.mp3";
+            
+            // Add these attributes to help with autoplay
+            audio.muted = true; // Initially muted to bypass autoplay restrictions
+            
+            // Try to play as soon as possible
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    // Autoplay started successfully
+                    // Now we can unmute after a slight delay
+                    setTimeout(() => {
+                        audio.muted = false;
+                        audio.volume = volumeSlider.value / 100;
+                        muteButton.textContent = "🔊";
+                    }, 1000);
+                }).catch(error => {
+                    // Autoplay was prevented
+                    console.log("Autoplay prevented:", error);
+                    // Keep the play button showing play state
+                    playPauseButton.textContent = "▶️";
+                });
+            }
+            
+            // Your existing event listeners
+            muteButton.addEventListener("click", function() {
                 audio.muted = !audio.muted;
                 muteButton.textContent = audio.muted ? "🔇" : "🔊";
             });
-
-            volumeSlider.addEventListener("input", function () {
+            
+            volumeSlider.addEventListener("input", function() {
                 audio.volume = volumeSlider.value / 100;
             });
-
-            // Play/Pause button functionality
-            playPauseButton.addEventListener("click", function () {
+            
+            playPauseButton.addEventListener("click", function() {
                 if (audio.paused) {
                     audio.play();
-                    playPauseButton.textContent = "⏸️"; // Change to pause icon
+                    playPauseButton.textContent = "⏸️";
                 } else {
                     audio.pause();
-                    playPauseButton.textContent = "▶️"; // Change to play icon
+                    playPauseButton.textContent = "▶️";
                 }
+            });
+            
+            // Loop the audio when it ends
+            audio.addEventListener("ended", () => {
+                audio.currentTime = 0;
+                audio.play();
             });
         });
 
@@ -1090,7 +1122,7 @@
         });
 
     </script>
-    <audio id="background-audio" loop autoplay>
+    <audio id="background-audio" preload="auto" autoplay>
         <source src="music/fly-me-to-the-moon-piano.mp3" type="audio/mp3">
         Your browser does not support the audio element.
     </audio>  

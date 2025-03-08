@@ -191,7 +191,8 @@
         /* Mobile-specific adjustments */
         @media (max-width: 768px) {
             .photo-collage {
-                min-height: 2400px; /* Taller for mobile */
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+                gap: 8px;
             }
             
             .photo-item {
@@ -751,7 +752,7 @@
             photoCollage.innerHTML = '';
             
             // Set the dimensions for the collage container to match the screenshot layout
-            photoCollage.style.height = '1800px';
+            // photoCollage.style.height = '1800px';
             photoCollage.style.display = 'grid';
             photoCollage.style.gridTemplateColumns = 'repeat(auto-fill, minmax(150px, 1fr))';
             photoCollage.style.gap = '10px';
@@ -764,7 +765,7 @@
                 photoItem.dataset.img = `img-${index}`;
                 
                 // Use fixed positions to match the screenshot layout
-                photoItem.style.position = 'absolute';
+                //photoItem.style.position = 'absolute';
                 
                 // Determine size variations (similar to screenshot)
                 const size = index % 5 === 0 ? 'large' : 
@@ -800,8 +801,8 @@
                 
                 photoItem.style.width = `${width}px`;
                 photoItem.style.height = `${height}px`;
-                photoItem.style.left = `${baseX + randomOffsetX}px`;
-                photoItem.style.top = `${baseY + randomOffsetY}px`;
+                //photoItem.style.left = `${baseX + randomOffsetX}px`;
+                //photoItem.style.top = `${baseY + randomOffsetY}px`;
                 
                 // Less extreme rotation as in the screenshot
                 const randomRotation = Math.floor(Math.random() * 10) - 5;
